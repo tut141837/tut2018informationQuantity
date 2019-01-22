@@ -59,9 +59,8 @@ public class Frequencer implements FrequencerInterface{
     	int flag;
 	int ii = suffixArray[i];
 	int jj = suffixArray[j];
-    	while(ii < mySpace.length && jj < mySpace.length){
+    	while(ii < mySpace.length && jj < mySpace.length ){
 	    if(mySpace[ii] > mySpace[jj]){
-		System.out.println(i+","+j);
 		return 1;
 
 	    }else if(mySpace[ii] < mySpace[jj]){
