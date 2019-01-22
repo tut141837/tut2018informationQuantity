@@ -2,18 +2,17 @@ package s4.umemura;
 import java.lang.*;
 import s4.specification.*;
 
-
 /*package s4.specification;
-public interface FrequencerInterface {     // This interface provides the design for frequency counter.
-    void setTarget(byte  target[]); // set the data to search.
-    void setSpace(byte  space[]);  // set the data to be searched target from.
-    int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
-                    //Otherwise, it return 0, when SPACE is not set or SPACE's length is zero
-                    //Otherwise, get the frequency of TAGET in SPACE
-    int subByteFrequency(int start, int end);
-    // get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].
-    // For the incorrect value of START or END, the behavior is undefined.
-}
+  public interface FrequencerInterface {     // This interface provides the design for frequency counter.
+  void setTarget(byte  target[]); // set the data to search.
+  void setSpace(byte  space[]);  // set the data to be searched target from.
+  int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
+  //Otherwise, it return 0, when SPACE is not set or SPACE's length is zero
+  //Otherwise, get the frequency of TAGET in SPACE
+  int subByteFrequency(int start, int end);
+  // get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].
+  // For the incorrect value of START or END, the behavior is undefined.
+  }
 */
 
 
@@ -57,25 +56,24 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
-		int ii = i;
-    	int jj = j;
     	int flag;
-    
+	int ii = suffixArray[i];
+	int jj = suffixArray[j];
     	while(ii < mySpace.length && jj < mySpace.length){
-    		if(mySpace[ii] > mySpace[jj]){
-    			System.out.println(ii+","+jj);
-    			return 1;
+	    if(mySpace[ii] > mySpace[jj]){
+		System.out.println(i+","+j);
+		return 1;
 
-    		}else if(mySpace[ii] == mySpace[jj]){
-    			ii++;
-    			jj++;
-    		}else{
-    			return -1;
-    		}
- 	   }
- 	   if(ii == mySpace.length && jj != mySpace.length ){return -1;}
- 	   else if(ii != mySpace.length && jj == mySpace.length){return 1;}
- 	   return 0;
+	    }else if(mySpace[ii] < mySpace[jj]){
+		return -1;
+	    }else{
+		ii++;
+		jj++;
+	    }
+	}
+	if(ii == mySpace.length && jj != mySpace.length ){return -1;}
+	else if(ii != mySpace.length && jj == mySpace.length){return 1;}
+	else {return 0;}
     }
 
     public void setSpace(byte []space) { 
@@ -89,18 +87,25 @@ public class Frequencer implements FrequencerInterface{
 	//
 	//
 	// ****  Please write code here... ***
-	int temp = 0;
+	/*int temp = 0;
 	for (int i = 0; i < mySpace.length; i++){
-        for (int j = i+1; j < mySpace.length; j++){
-            if (suffixCompare(i,j) == 1)
-            {
-                temp = suffixArray[i];
-                suffixArray[i] = suffixArray[j];
-                suffixArray[j] = temp;
-                //aa
-
-            }   
-        }
+	    for (int j = (mySpace.length - 1); j > i; j--){
+		if (suffixCompare(i,j) == 1){
+		    temp = suffixArray[i];
+		    suffixArray[i] = suffixArray[j];
+		    suffixArray[j] = temp;
+		}   
+	    }
+	}*/
+	
+	for(int i = 0; i < mySpace.length -1 ; i++){
+	    for(int j = mySpace.length - 1 ; j > i ; j--){
+		if(suffixCompare(j-1,j) == 1){
+		    int temp = suffixArray[j];
+		    suffixArray[j] = suffixArray[j-1];
+		    suffixArray[j-1] = temp;
+		}
+	    }
 	}
 
 	//
@@ -154,15 +159,15 @@ public class Frequencer implements FrequencerInterface{
 
     public int subByteFrequency(int start, int end) {
 	/* This method be work as follows, but
-	int spaceLength = mySpace.length;
-	int count = 0;
-	for(int offset = 0; offset< spaceLength - (end - start); offset++) {
-	    boolean abort = false;
-	    for(int i = 0; i< (end - start); i++) {
-		if(myTarget[start+i] != mySpace[offset+i]) { abort = true; break; }
-	    }
-	    if(abort == false) { count++; }
-	}
+	   int spaceLength = mySpace.length;
+	   int count = 0;
+	   for(int offset = 0; offset< spaceLength - (end - start); offset++) {
+	   boolean abort = false;
+	   for(int i = 0; i< (end - start); i++) {
+	   if(myTarget[start+i] != mySpace[offset+i]) { abort = true; break; }
+	   }
+	   if(abort == false) { count++; }
+	   }
 	*/
 	int first = subByteStartIndex(start, end);
 	int last1 = subByteEndIndex(start, end);
