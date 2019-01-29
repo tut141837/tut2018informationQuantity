@@ -111,12 +111,15 @@ public class Frequencer implements FrequencerInterface{
     }
 
     private int targetCompare(int i, int j, int end) {
-	// comparing suffix_i and target_j_end by dictonary order with limitation of length;
+	// comparing suffix_i and target_j(i?)_end by dictonary order with limitation of length;
 	// if the beginning of suffix_i matches target_i_end, and suffix is longer than target  it returns 0;
 	// if suffix_i > target_i_end it return 1;
 	// if suffix_i < target_i_end it return -1
 	// It is not implemented yet.
 	// It should be used to search the apropriate index of some suffix.
+
+	//targetがsuffixの頭になっているなら"=",違ったら辞書順で
+	
 	// Example of search
 	// suffix          target
         // "o"       >     "i"
@@ -135,10 +138,15 @@ public class Frequencer implements FrequencerInterface{
     }
 
     private int subByteStartIndex(int start, int end) {
-	// It returns the index of the first suffix which is equal or greater than subBytes;
+        // It returns the index of the first suffix which is equal or greater than subBytes;
 	// not implemented yet;
+	// If myTagret is "Hi Ho",  start=0, end=2 means "Hi".
 	// For "Ho", it will return 5  for "Hi Ho Hi Ho".
+	//   5 means suffix_5,
+	//   Please note suffix_5 is "Ho" and "Ho" starts from here.
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
+	//   6 means suffix_6,
+	//   Please note suffix_6 is "Ho Hi Ho", and "Ho " starts from here.
 	//
 	// ****  Please write code here... ***
 	//
@@ -148,8 +156,12 @@ public class Frequencer implements FrequencerInterface{
     private int subByteEndIndex(int start, int end) {
 	// It returns the next index of the first suffix which is greater than subBytes;
 	// not implemented yet
+	// If myTaget is "Hi Ho",  start=0, end=2 means "Hi".
 	// For "Ho", it will return 7  for "Hi Ho Hi Ho".
 	// For "Ho ", it will return 7 for "Hi Ho Hi Ho".
+	//  7 means suffix_7,
+	//  Please note suffix_7 is "i Ho Hi", which does not start with "Ho" nor "Ho ".
+        //  Whereas suffix_5 is "Ho Hi Ho", which starts "Ho" and "Ho ".
 	//
 	// ****  Please write code here... ***
 	//
@@ -157,17 +169,17 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public int subByteFrequency(int start, int end) {
-	/* This method be work as follows, but
-	   int spaceLength = mySpace.length;
-	   int count = 0;
-	   for(int offset = 0; offset< spaceLength - (end - start); offset++) {
-	   boolean abort = false;
-	   for(int i = 0; i< (end - start); i++) {
-	   if(myTarget[start+i] != mySpace[offset+i]) { abort = true; break; }
-	   }
-	   if(abort == false) { count++; }
-	   }
-	*/
+	// This method be work as follows, but
+	int spaceLength = mySpace.length;
+	int count = 0;
+	for(int offset = 0; offset< spaceLength - (end - start); offset++) {
+	    boolean abort = false;
+	    for(int i = 0; i< (end - start); i++) {
+		if(myTarget[start+i] != mySpace[offset+i]) { abort = true; break; }
+	    }
+	    if(abort == false) { count++; }
+	}
+	
 	int first = subByteStartIndex(start, end);
 	int last1 = subByteEndIndex(start, end);
 	return last1 - first;

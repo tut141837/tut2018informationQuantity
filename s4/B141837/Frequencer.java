@@ -1,19 +1,18 @@
-package s4.b141837;
+package s4.B141837;
 import java.lang.*;
 import s4.specification.*;
 
-
 /*package s4.specification;
-public interface FrequencerInterface {     // This interface provides the design for frequency counter.
-    void setTarget(byte  target[]); // set the data to search.
-    void setSpace(byte  space[]);  // set the data to be searched target from.
-    int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
-                    //Otherwise, it return 0, when SPACE is not set or SPACE's length is zero
-                    //Otherwise, get the frequency of TAGET in SPACE
-    int subByteFrequency(int start, int end);
-    // get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].
-    // For the incorrect value of START or END, the behavior is undefined.
-}
+  public interface FrequencerInterface {     // This interface provides the design for frequency counter.
+  void setTarget(byte  target[]); // set the data to search.
+  void setSpace(byte  space[]);  // set the data to be searched target from.
+  int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
+  //Otherwise, it return 0, when SPACE is not set or SPACE's length is zero
+  //Otherwise, get the frequency of TAGET in SPACE
+  int subByteFrequency(int start, int end);
+  // get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].
+  // For the incorrect value of START or END, the behavior is undefined.
+  }
 */
 
 
@@ -57,25 +56,23 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
-		int ii = i;
-    	int jj = j;
     	int flag;
-    
-    	while(ii < mySpace.length && jj < mySpace.length){
-    		if(mySpace[ii] > mySpace[jj]){
-    			System.out.println(ii+","+jj);
-    			return 1;
+	int ii = suffixArray[i];
+	int jj = suffixArray[j];
+    	while(ii < mySpace.length && jj < mySpace.length ){
+	    if(mySpace[ii] > mySpace[jj]){
+		return 1;
 
-    		}else if(mySpace[ii] == mySpace[jj]){
-    			ii++;
-    			jj++;
-    		}else{
-    			return -1;
-    		}
- 	   }
- 	   if(ii == mySpace.length && jj != mySpace.length ){return -1;}
- 	   else if(ii != mySpace.length && jj == mySpace.length){return 1;}
- 	   return 0;
+	    }else if(mySpace[ii] < mySpace[jj]){
+		return -1;
+	    }else{
+		ii++;
+		jj++;
+	    }
+	}
+	if(ii == mySpace.length && jj != mySpace.length ){return -1;}
+	else if(ii != mySpace.length && jj == mySpace.length){return 1;}
+	else {return 0;}
     }
 
     public void setSpace(byte []space) { 
@@ -89,30 +86,40 @@ public class Frequencer implements FrequencerInterface{
 	//
 	//
 	// ****  Please write code here... ***
-	int temp = 0;
+	/*int temp = 0;
 	for (int i = 0; i < mySpace.length; i++){
-        for (int j = i+1; j < mySpace.length; j++){
-            if (suffixCompare(i,j) == 1)
-            {
-                temp = suffixArray[i];
-                suffixArray[i] = suffixArray[j];
-                suffixArray[j] = temp;
-                //aa
-
-            }   
-        }
+	    for (int j = (mySpace.length - 1); j > i; j--){
+		if (suffixCompare(i,j) == 1){
+		    temp = suffixArray[i];
+		    suffixArray[i] = suffixArray[j];
+		    suffixArray[j] = temp;
+		}   
+	    }
+	}*/
+	
+	for(int i = 0; i < mySpace.length -1 ; i++){
+	    for(int j = mySpace.length - 1 ; j > i ; j--){
+		if(suffixCompare(j-1,j) == 1){
+		    int temp = suffixArray[j];
+		    suffixArray[j] = suffixArray[j-1];
+		    suffixArray[j-1] = temp;
+		}
+	    }
 	}
 
 	//
     }
 
     private int targetCompare(int i, int j, int end) {
-	// comparing suffix_i and target_j_end by dictonary order with limitation of length;
+	// comparing suffix_i and target_j(i?)_end by dictonary order with limitation of length;
 	// if the beginning of suffix_i matches target_i_end, and suffix is longer than target  it returns 0;
 	// if suffix_i > target_i_end it return 1;
 	// if suffix_i < target_i_end it return -1
 	// It is not implemented yet.
 	// It should be used to search the apropriate index of some suffix.
+
+	//targetがsuffixの頭になっているなら"=",違ったら辞書順で
+	
 	// Example of search
 	// suffix          target
         // "o"       >     "i"
@@ -131,10 +138,15 @@ public class Frequencer implements FrequencerInterface{
     }
 
     private int subByteStartIndex(int start, int end) {
-	// It returns the index of the first suffix which is equal or greater than subBytes;
+        // It returns the index of the first suffix which is equal or greater than subBytes;
 	// not implemented yet;
+	// If myTagret is "Hi Ho",  start=0, end=2 means "Hi".
 	// For "Ho", it will return 5  for "Hi Ho Hi Ho".
+	//   5 means suffix_5,
+	//   Please note suffix_5 is "Ho" and "Ho" starts from here.
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
+	//   6 means suffix_6,
+	//   Please note suffix_6 is "Ho Hi Ho", and "Ho " starts from here.
 	//
 	// ****  Please write code here... ***
 	//
@@ -144,8 +156,12 @@ public class Frequencer implements FrequencerInterface{
     private int subByteEndIndex(int start, int end) {
 	// It returns the next index of the first suffix which is greater than subBytes;
 	// not implemented yet
+	// If myTaget is "Hi Ho",  start=0, end=2 means "Hi".
 	// For "Ho", it will return 7  for "Hi Ho Hi Ho".
 	// For "Ho ", it will return 7 for "Hi Ho Hi Ho".
+	//  7 means suffix_7,
+	//  Please note suffix_7 is "i Ho Hi", which does not start with "Ho" nor "Ho ".
+        //  Whereas suffix_5 is "Ho Hi Ho", which starts "Ho" and "Ho ".
 	//
 	// ****  Please write code here... ***
 	//
@@ -153,7 +169,7 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public int subByteFrequency(int start, int end) {
-	/* This method be work as follows, but
+	// This method be work as follows, but
 	int spaceLength = mySpace.length;
 	int count = 0;
 	for(int offset = 0; offset< spaceLength - (end - start); offset++) {
@@ -163,7 +179,7 @@ public class Frequencer implements FrequencerInterface{
 	    }
 	    if(abort == false) { count++; }
 	}
-	*/
+	
 	int first = subByteStartIndex(start, end);
 	int last1 = subByteEndIndex(start, end);
 	return last1 - first;
