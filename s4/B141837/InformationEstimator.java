@@ -16,7 +16,7 @@ public interface InformationEstimatorInterface{
 */
 /*
 動的計画法　分割統治法
-
+未完了
 */
 
 
