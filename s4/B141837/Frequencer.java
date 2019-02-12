@@ -79,14 +79,14 @@ public class Frequencer implements FrequencerInterface{
 	mySpace = space; if(mySpace.length>0) spaceReady = true; 
 	suffixArray = new int[space.length];
 	// put all suffixes  in suffixArray. Each suffix is expressed by one integer.
-	for(int i = 0; i< space.length; i++) {
+	/*for(int i = 0; i< space.length; i++) {
 	    suffixArray[i] = i;
-	}
+	}*/
 	// Sorting is not implmented yet.
 	//
 	//
 	// ****  Please write code here... ***
-	/*int temp = 0;
+	int temp = 0;
 	for (int i = 0; i < mySpace.length; i++){
 	    for (int j = (mySpace.length - 1); j > i; j--){
 		if (suffixCompare(i,j) == 1){
@@ -95,18 +95,7 @@ public class Frequencer implements FrequencerInterface{
 		    suffixArray[j] = temp;
 		}   
 	    }
-	}*/
-	
-	for(int i = 0; i < mySpace.length -1 ; i++){
-	    for(int j = mySpace.length - 1 ; j > i ; j--){
-		if(suffixCompare(j-1,j) == 1){
-		    int temp = suffixArray[j];
-		    suffixArray[j] = suffixArray[j-1];
-		    suffixArray[j-1] = temp;
-		}
-	    }
 	}
-
 	//
     }
 
@@ -117,24 +106,27 @@ public class Frequencer implements FrequencerInterface{
 	// if suffix_i < target_i_end it return -1
 	// It is not implemented yet.
 	// It should be used to search the apropriate index of some suffix.
-
-	//targetがsuffixの頭になっているなら"=",違ったら辞書順で
 	
 	// Example of search
 	// suffix          target
-        // "o"       >     "i"
-        // "o"       <     "z"
+  // "o"       >     "i"
+  // "o"       <     "z"
 	// "o"       =     "o"
-        // "o"       <     "oo"
+  // "o"       <     "oo"
 	// "Ho"      >     "Hi"
 	// "Ho"      <     "Hz"
 	// "Ho"      =     "Ho"
-        // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
+  // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
 	// "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
 	//
 	// ****  Please write code here... ***
 	//
-	return 0; // This line should be modified.
+  //targetがsuffixの頭になっているなら0,そうでない場合,suffix > targetなら1,suffix < targetなら-1
+  
+      
+      
+      
+	return 0; // This line should be modified.(この行は後で変更する必要がある)
     }
 
     private int subByteStartIndex(int start, int end) {
