@@ -17,10 +17,14 @@ public interface InformationEstimatorInterface{
 /*
 動的計画法　分割統治法
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 未完了
 >>>>>>> 8ded668e640cb9e1b8fa6b94ec48166cb542e23c
+=======
+未完了
+>>>>>>> 8163533849d9c1482240828342262a2fd79c2b6a
 */
 
 
