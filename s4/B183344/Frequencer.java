@@ -168,7 +168,7 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
-	int min = 0;
+	int min = -1;
 	int mid = 0;
         int max = mySpace.length;
 	int compare_result = 0;
@@ -196,7 +196,7 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
-	int min = 0;
+	int min = -1;
 	int mid = 0;
         int max = mySpace.length;
 	int compare_result = 0;

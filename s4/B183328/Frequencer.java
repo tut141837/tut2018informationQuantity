@@ -42,6 +42,7 @@ public class Frequencer implements FrequencerInterface{
     	}
     }
 
+
     private int suffixCompare(int i, int j) {
     	// comparing two suffixes by dictionary order.
     	// i and j denoetes suffix_i, and suffix_j
@@ -56,6 +57,8 @@ public class Frequencer implements FrequencerInterface{
     	// "Ho"     <  "Ho "      ; if the prefix is identical, longer string is big
     	//
     	// ****  Please write code here... ***
+
+
       if(i>j){
         int temp =i;
         i=j;
@@ -78,6 +81,50 @@ public class Frequencer implements FrequencerInterface{
       return 0;
     }
 
+
+    public void sort(int[] array, int low, int high){
+        if(low < high){
+            int middle = (low + high) >>> 1;
+            sort(array, low , middle);
+            sort(array, middle+1, high);
+            merge(array, low, middle, high);
+        }
+
+    }
+    public void merge(int[] array, int low, int middle, int high){
+        int[] helper = new int[array.length];
+
+        for (int i = low; i <= high; i++){
+            helper[i] = array[i];
+        }
+        int helperLeft = low;
+        int helperRight = middle + 1;
+        int current = low;
+
+        //文字列変える
+        while (helperLeft <= middle && helperRight <= high){
+          int i=0;
+          if(suffixCompare(helper[helperLeft]+i,helper[helperRight]+i)==1){
+            array[current] = helper[helperRight];
+            helperRight ++;
+          }
+          else {
+              array[current] = helper[helperLeft];
+              helperLeft ++;
+          }
+          i++;
+          current ++;
+        }
+        int remaining = middle - helperLeft;
+        for (int i = 0; i <= remaining; i++){
+            array[current + i] = helper[helperLeft + i];
+        }
+
+
+
+    }
+
+    //ソートしてる
     public void setSpace(byte []space) {
     	mySpace = space;
       if(mySpace.length>0) spaceReady = true;
@@ -90,20 +137,28 @@ public class Frequencer implements FrequencerInterface{
     	//
     	//
     	// ****  Please write code here... ***
-      for(int i=space.length-1;i>0;i--){
 
-        for(int j=0;j<i;j++){
-          if(suffixCompare(suffixArray[j],suffixArray[j+1])==1){
+      sort(suffixArray, 0, suffixArray.length-1);
 
-            int temp = suffixArray[j];
-            suffixArray[j] = suffixArray[j+1];
-            suffixArray[j+1] = temp;
-          }
+      // for(int i=space.length-1;i>0;i--){
+      //     System.out.write(mySpace[suffixArray[i]]);
+      //     System.out.write('\n');
+      // }
 
-        }
+      // for(int i=space.length-1;i>0;i--){
+      //
+      //   for(int j=0;j<i;j++){
+      //     if(suffixCompare(suffixArray[j],suffixArray[j+1])==1){
+      //
+      //       int temp = suffixArray[j];
+      //       suffixArray[j] = suffixArray[j+1];
+      //       suffixArray[j+1] = temp;
+      //     }
+      //
+      //   }
 
-      }
-    	//
+
+
     }
 
     private int targetCompare(int i, int j, int end) {
@@ -132,7 +187,7 @@ public class Frequencer implements FrequencerInterface{
   // System.out.println(j+":"+end);
   for(int k=0;k<end-j;k++){
     if(suffixArray[i]+k > mySpace.length-1){
-      System.out.println(suffixArray[i]+k);
+      // System.out.println(suffixArray[i]+k);
       return -2;
     }
 
@@ -147,7 +202,6 @@ public class Frequencer implements FrequencerInterface{
         return 0;
       }
     }
-    // System.out.println("kokokuru?");
   }
 	/////////////////////////////////////////////////////
 	return 1; // This line should be modified.

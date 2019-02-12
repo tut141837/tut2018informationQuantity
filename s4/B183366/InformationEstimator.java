@@ -85,6 +85,12 @@ public class InformationEstimator implements InformationEstimatorInterface{
     // }
 
     public double estimation(){
+	  if(myTarget == null){
+		  return 0.0;
+	  }
+	  if(mySpace == null){
+		  return Double.MAX_VALUE;
+	  }
       /*最小値を格納*/
       double[] iqr = new double[myTarget.length];
 

@@ -33,12 +33,12 @@ public class Frequencer implements FrequencerInterface{
     // The following is the code to print the variable
     private void printSuffixArray() {
       if(spaceReady) {
-        for(int i=0; i< mySpace.length; i++) {
+        for(int i = 0; i < mySpace.length; i++) {
           int s = suffixArray[i];
-          for(int j=s;j<mySpace.length;j++) {
-            System.out.write(mySpace[j]);
+          for(int j = s;j < mySpace.length; j++) {
+            //System.out.write(mySpace[j]);
           }
-          System.out.write('\n');
+          //System.out.write('\n');
         }
       }
     }
@@ -86,10 +86,10 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public void setSpace(byte []space) { 
-      mySpace = space; if(mySpace.length>0) spaceReady = true; 
+      mySpace = space; if(mySpace.length > 0) spaceReady = true; 
       suffixArray = new int[space.length];
       // put all suffixes  in suffixArray. Each suffix is expressed by one integer.
-      for(int i = 0; i< space.length; i++) {
+      for(int i = 0; i < space.length; i++) {
           suffixArray[i] = i;
       }
 
@@ -103,8 +103,8 @@ public class Frequencer implements FrequencerInterface{
       //   }
       // }
 
-      for(int i=0; i < (mySpace.length-1); i++){
-        for(int j=(mySpace.length-1); j > i; j--){
+      for(int i = 0; i < (mySpace.length-1); i++){
+        for(int j = (mySpace.length-1); j > i; j--){
           int result = suffixCompare(suffixArray[j],suffixArray[j-1]);
           if(result == -1){
             int tmp = suffixArray[j-1];
@@ -202,8 +202,8 @@ public class Frequencer implements FrequencerInterface{
   */
   int first = subByteStartIndex(start, end);
   int last1 = subByteEndIndex(start, end);
-  System.out.println(first);
-  System.out.println(last1);
+  //System.out.println(first);
+  //System.out.println(last1);
   return last1 - first;
     }
 
@@ -223,7 +223,7 @@ public class Frequencer implements FrequencerInterface{
       frequencerObject = new Frequencer();
       frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
 
-      frequencerObject.printSuffixArray(); // you may use this line for DEBUG
+      //frequencerObject.printSuffixArray(); // you may use this line for DEBUG
       /* Example from "Hi Ho Hi Ho"
          0: Hi Ho
          1: Ho

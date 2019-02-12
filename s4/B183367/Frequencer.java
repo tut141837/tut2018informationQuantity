@@ -4,14 +4,14 @@ import s4.specification.*;
 
 public class Frequencer implements FrequencerInterface{
     // Code to Test, *warning: This code  contains intentional problem*
-    byte [] myTarget;
-	byte [] mySpace;
+    byte[] myTarget;
+	byte[] mySpace;
 	boolean targetReady = false;
 	boolean spaceReady = false;
 	
-	int [] suffixArray;
-	int [] A;
-	int [] a;
+	int[] suffixArray;
+	int[] A;
+	int[] a;
 	int count = 0;
 
 	// The variable, "suffixArray" is the sorted array of all suffixes of mySpace.
@@ -20,10 +20,10 @@ public class Frequencer implements FrequencerInterface{
 	private void printSuffixArray() {
 		System.out.println("----- SuffixArray -----");
 		if(spaceReady) {
-			for(int i=0; i< mySpace.length; i++) {
+			for(int i=0; i < mySpace.length; i++) {
 			int s = suffixArray[i];
 			System.out.printf("%02d:",i);		
-			for(int j=s;j<mySpace.length;j++) {
+			for(int j=s; j < mySpace.length; j++) {
 				System.out.write(mySpace[j]);
 			}
 			System.out.write('\n');
@@ -31,7 +31,7 @@ public class Frequencer implements FrequencerInterface{
 		}
 	}
 
-	private int suffixCompare_(int i, int j) {
+	private int suffixCompare(int i, int j) {
 		// comparing two suffixes by dictionary order.
 		// i and j denoetes suffix_i, and suffix_j
 		// if suffix_i > suffix_j, it returns 1
@@ -58,7 +58,7 @@ public class Frequencer implements FrequencerInterface{
 		return 0;
 	}
 
-	public void setSpace(byte []space) {
+	public void setSpace(byte[] space) {
 		mySpace = space; if(mySpace.length>0) spaceReady = true;
 		suffixArray = new int[space.length];
 		a = suffixArray;
@@ -105,7 +105,7 @@ public class Frequencer implements FrequencerInterface{
 	private void merge(int [] a1, int [] a2, int [] a) {
 		int i = 0, j = 0;
 		while(i < a1.length || j < a2.length) {
-			if(j >= a2.length || (i < a1.length && suffixCompare_(a1[i],a2[j]) != 1)) {				
+			if(j >= a2.length || (i < a1.length && suffixCompare(a1[i],a2[j]) != 1)) {				
 				a[i+j] = a1[i];
 				i++;
 			} else {				
@@ -131,7 +131,9 @@ public class Frequencer implements FrequencerInterface{
 
 	private int targetCompare(int i, int start, int end) {
 		// comparing suffix_i and target_start_end by dictonary order with limitation of length;
-		// if the beginning of suffix_i matches target_i_end, and suffix is longer than target it returns 0;
+		// if the beginning of suffix_i matches target_i_end, 
+		// and suffix is longer than target it returns 0;
+
 		// if suffix_i > target_j_end it return 1;
 		// if suffix_i < target_j_end it return -1;
 		// It is not implemented yet.
@@ -201,16 +203,13 @@ public class Frequencer implements FrequencerInterface{
 		int pLeft = 0;
 		int pRight = mySpace.length - 1;
 		//System.out.println("pLeft: "+pLeft+" pRight:"+pRight);			
-		
 
 		do {
 			int center = (pLeft + pRight) / 2;
 			//System.out.println("Center > "+center);
-			
 			if (targetCompare(center,start,end) == 0 && targetCompare(center-1,start,end) == -1) {
 				//System.out.println("Index > "+center);				
 				return center;
-
 			} else if (targetCompare(center,start,end) == -1) {
 				pLeft = center + 1; //真ん中の一つ右側を左端とする
 			} else {
@@ -261,7 +260,6 @@ public class Frequencer implements FrequencerInterface{
 		} while (pLeft <= pRight);
 
 		return suffixArray.length;
-		
 	}
 
 	public int subByteFrequency(int start, int end) {
@@ -280,11 +278,6 @@ public class Frequencer implements FrequencerInterface{
 		
 		int first = subByteStartIndex(start,end);
 		int last1 = subByteEndIndex(start, end);
-
-		//inspection code
-		// for(int k=start;k<end;k++) { System.out.write(myTarget[k]); }
-		// System.out.printf(": first=%d last1=%d\n", first, last1);
-		
 		return last1 - first;
 	}
 
@@ -305,14 +298,12 @@ public class Frequencer implements FrequencerInterface{
 		// Hi Ho Hi Ho -> set as H -> should return 4
 		try {
 			frequencerObject = new Frequencer();
-
 			startTime = System.nanoTime();
-				frequencerObject.setSpace("Hi Ho Hi Ho Hi Ho Hi Ho".getBytes());
-				frequencerObject.setTarget("H".getBytes());
-				int result = frequencerObject.frequency();
-				System.out.print("Freq = "+ result+" ");
+			frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
+			frequencerObject.setTarget("H".getBytes());
+			int result = frequencerObject.frequency();
+			System.out.print("Freq = "+ result+" ");
 			endTime = System.nanoTime();
-
 			System.out.printf("%ntask is processing... %ntime: %d ms.%n", (endTime - startTime) / 1000);
 
 			if(4 == result) { System.out.println("OK"); }
@@ -323,7 +314,7 @@ public class Frequencer implements FrequencerInterface{
 			System.out.println("STOP");
 		}
 
-		// Die De Die De -> set as D ->  should return 4
+		// Die De Die De -> set as Di ->  should return 2
 		try {
 			frequencerObject = new Frequencer();
 			frequencerObject.setSpace("Die Do Die Do".getBytes());

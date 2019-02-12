@@ -69,6 +69,66 @@ public class Frequencer implements FrequencerInterface{
 
     }
 
+
+
+
+
+
+
+
+
+
+    public void sort(int[] array, int low, int high){
+           if(low < high){
+               int middle = (low + high) >>> 1;
+               sort(array, low , middle);
+               sort(array, middle+1, high);
+               merge(array, low, middle, high);
+           }
+    }
+    public void merge(int[] array, int low, int middle, int high){
+           int[] helper = new int[array.length];
+
+           for (int i = low; i <= high; i++){
+               helper[i] = array[i];
+           }
+           int helperLeft = low;
+           int helperRight = middle + 1;
+           int current = low;
+
+           while (helperLeft <= middle && helperRight <= high){
+             if(suffixCompare(helper[helperLeft],helper[helperRight]) == -1){
+            //   if (helper[helperLeft] <= helper[helperRight]){
+                   array[current] = helper[helperLeft];
+                   helperLeft ++;
+               }
+               else {
+                   array[current] = helper[helperRight];
+                   helperRight ++;
+
+               }
+               current ++;
+           }
+           int remaining = middle - helperLeft;
+           for (int i = 0; i <= remaining; i++){
+               array[current + i] = helper[helperLeft + i];
+           }
+       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void setSpace(byte []space) {
         mySpace = space;
         if(mySpace.length>0) spaceReady = true;
@@ -77,7 +137,10 @@ public class Frequencer implements FrequencerInterface{
             suffixArray[i] = i;
         }
 
+        sort(suffixArray, 0, suffixArray.length-1);
+
         // **** Please write code here... *** //
+        /*
         for(int i = 0; i < suffixArray.length-1; i++){
             for(int j = suffixArray.length - 1; j > i; j--){
 //              System.out.println("###### i="+ i +" j="+ j +" ######");
@@ -96,6 +159,7 @@ public class Frequencer implements FrequencerInterface{
 //                System.out.println("");
             }
         }
+        */
     }
 
     private int targetCompare(int i, int j, int end) {

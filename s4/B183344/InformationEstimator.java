@@ -47,6 +47,15 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	double value;
 	double tmp;
 
+	if(myTarget == null)
+	    {
+		return 0;
+	    }
+	if(mySpace == null)
+	    {
+		return Double.MAX_VALUE;
+	    }
+
 	for(int i = 0; i < myTarget.length; i++)
 	    {
 		value = 0.0;

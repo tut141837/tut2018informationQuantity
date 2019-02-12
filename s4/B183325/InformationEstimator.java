@@ -41,7 +41,10 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     public double estimation(){
-		double [] myIq = new double[myTarget.length];
+		double [] myIq = null;
+    if(myTarget.length != 0) {
+      myIq = new double[myTarget.length];
+    }
 		double iq1, iq2;
 		boolean [] partition = new boolean[myTarget.length+1];
 		int np;

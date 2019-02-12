@@ -185,7 +185,6 @@ public class Frequencer implements FrequencerInterface{
             if(0 == targetCompare(k, start, end))
                 return k;
         }
-        System.out.println("not found");
         return suffixArray.length; // This line should be modified.
     }
 

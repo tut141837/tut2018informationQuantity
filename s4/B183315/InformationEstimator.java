@@ -4,7 +4,7 @@ import java.lang.*;
 
 import s4.specification.*;
 
-import static s4.B183315.TestCase.InformationEstimatorTest;
+//import static s4.B183315.TestCase.InformationEstimatorTest;
 
 /** What is imported from s4.specification
 package s4.specification;
@@ -102,6 +102,25 @@ public class InformationEstimator implements InformationEstimatorInterface {
         }
         var value = cash[myTarget.length-1];
         return Double.isInfinite(value) ? Double.MAX_VALUE : value;
+    }
+
+    public static void main(String[] args) {
+	InformationEstimator myObject;
+	double value;
+	myObject = new InformationEstimator();
+	myObject.setSpace("3210321001230123".getBytes());
+	myObject.setTarget("0".getBytes());
+	value = myObject.estimation();
+	System.out.println(">0 "+value);
+	myObject.setTarget("01".getBytes());
+	value = myObject.estimation();
+	System.out.println(">01 "+value);
+	myObject.setTarget("0123".getBytes());
+	value = myObject.estimation();
+	System.out.println(">0123 "+value);
+	myObject.setTarget("00".getBytes());
+	value = myObject.estimation();
+	System.out.println(">00 "+value);
     }
 }
 				  

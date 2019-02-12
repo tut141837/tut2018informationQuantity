@@ -44,6 +44,40 @@ public class Frequencer implements FrequencerInterface{
       }
     }
 
+    private void merge(int[] a1, int[] a2, int[] a){
+      int i=0,j=0;
+      while(i<a1.length || j<a2.length){
+        if(j>=a2.length || (i<a1.length && suffixCompare(a1[i], a2[j]) != 1)){
+          a[i+j]=a1[i];
+          i++;
+        }
+        else{
+          a[i+j]=a2[j];
+          j++;
+        }
+      }
+    }
+
+    /*
+     * マージソート
+     * 既にソート済みの2つの配列を併合して新しい配列を
+     * 生成することで、データのソートを行います。
+     */
+    private void mergeSort(int[] a){
+      if(a.length>1){
+        int m=a.length/2;
+        int n=a.length-m;
+        int[] a1=new int[m];
+        int[] a2=new int[n];
+        for(int i=0;i<m;i++) a1[i]=a[i];
+        for(int i=0;i<n;i++) a2[i]=a[m+i];
+        mergeSort(a1);
+        mergeSort(a2);
+        merge(a1,a2,a);
+      }
+    }
+
+
     private int suffixCompare(int i, int j) {
       // comparing two suffixes by dictionary order.
       // i and j denoetes suffix_i, and suffix_j
@@ -97,16 +131,8 @@ public class Frequencer implements FrequencerInterface{
           suffixArray[i] = i;
       }
 
-      for(int i=0; i < (mySpace.length-1); i++){
-        for(int j=(mySpace.length-1); j > i; j--){
-          int result = suffixCompare(suffixArray[j],suffixArray[j-1]);
-          if(result == -1){
-            int tmp = suffixArray[j-1];
-            suffixArray[j-1] = suffixArray[j];
-            suffixArray[j] = tmp;
-          }
-        }
-      }
+      
+      mergeSort(suffixArray);
 
     }
 

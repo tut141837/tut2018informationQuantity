@@ -1,8 +1,5 @@
 package s4.B183374;
 import java.lang.*;
-
-import com.sun.prism.impl.Disposer.Target;
-
 import s4.specification.*;
 
 
@@ -76,7 +73,6 @@ public class Frequencer implements FrequencerInterface{
 			return 1;
 		} 
 		return suffixCompare(i + 1, j + 1);
-	
 	}
     }
 
@@ -139,10 +135,11 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
-	if (mySpace[i] > myTarget[j]) {
-		return 1;	
-	} else if (mySpace[i] < myTarget[j]) {
-		return -1;
+	/*
+	if (mySpace[i] < myTarget[j]) {
+		return -1;	
+	} else if (mySpace[i] > myTarget[j]) {
+		return 1;
 	} else {
 		if (i + 1 == mySpace.length) {
 			if (j == end - 1) {
@@ -155,6 +152,18 @@ public class Frequencer implements FrequencerInterface{
 			}
 		return targetCompare(i + 1, j + 1, end);
 	}
+	*/
+	
+	int n = suffixArray[i];
+	int last = mySpace.length - n;
+	if(last > end-j)last = end-j;
+	for(int k = 0;k<last;k++){
+		if(mySpace[n+k] > myTarget[j+k])return 1;
+		else if(mySpace[n+k] < myTarget[j+k]) return -1;
+	}
+	if(last<end-j)return -1;
+	return 0;
+	
 	
 	//return 0; // This line should be modified.
     }
@@ -166,14 +175,29 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
 	//
 	// ****  Please write code here... ***
+	int left = 0;
+	int right = mySpace.length - 1;
+	int center = 0;
+	if(targetCompare(left,start,end) == 0)return left;
+
+	while(right - left >1){
+		center = (left + right) / 2;
+		if(targetCompare(center,start,end) >= 0)right = center;
+		else left = center;
+		//if(center == left)return right;
+	}
+
+	/*
 	for(int i = 0;i < mySpace.length - 1 ;i++){
 		if(targetCompare(suffixArray[i],start,end) == 0){
 			return i;
 			}
 		}
-	return -1;
+		*/
+	return right;
 	}
 	
+
     private int subByteEndIndex(int start, int end) {
 	// It returns the next index of the first suffix which is greater than subBytes;
 	// not implemented yet
@@ -181,13 +205,30 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 7 for "Hi Ho Hi Ho".
 	//
 	// ****  Please write code here... ***
+	/*
 	for(int i = 0;i < mySpace.length - 1;i++){
 		if(targetCompare(suffixArray[i],start,end) == 1){
 			return i;
 			}
 		}
 	return -1;
-    }
+	
+	*/
+	int left = 0;
+	int right = mySpace.length - 1;
+	int center = 0;
+	if(targetCompare(right,start,end) == 0)return mySpace.length;
+
+	while(right - left >1){
+		center = (left + right) / 2;
+		if(targetCompare(center,start,end) <= 0)left = center;
+		else right = center;
+		//if(center == left)return right;
+		}
+		return right;
+	}
+	
+
 
     public int subByteFrequency(int start, int end) {
 	/* This method be work as follows, but */

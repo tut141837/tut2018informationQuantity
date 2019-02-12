@@ -1,4 +1,4 @@
-package s4.umemura;
+package s4.B173301;
 import java.lang.*;
 import s4.specification.*;
 
@@ -180,6 +180,10 @@ public class Frequencer implements FrequencerInterface{
 	    }
 	}
 
+	if(i > suffixArray.length - 1){
+		j = i;
+	}
+	
 	return j;
 	//return suffixArray.length; // This line should be modified.
     }

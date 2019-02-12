@@ -102,7 +102,7 @@ public class TestCase {
 	    myObject.setSpace("AAAB".getBytes());
 	    myObject.setTarget("AAAAB".getBytes());
 	    freq = myObject.subByteFrequency(1,2);
-	    if(3 != freq) { System.out.println("SubBytefrequency() for AAAB, should return 2, when taget is AAAAB[1:2]. But it returns "+freq); c++; }
+	    if(3 != freq) { System.out.println("SubBytefrequency() for AAAB, should return 3, when taget is AAAAB[1:2]. But it returns "+freq); c++; }
 	    if(2 == freq) { System.out.println("You might be confused by the intentional error in sample code.");   }
 	    myObject = new Frequencer();
 	    myObject.setSpace("AAAB".getBytes());

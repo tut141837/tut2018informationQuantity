@@ -134,18 +134,20 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 	//
+    	int x = suffixArray[i];
+    	int y = j;
     	while(true) {
-    	    if(mySpace[suffixArray[i]] > myTarget[j])
+    	    if(mySpace[x] > myTarget[y])
     	      return -1;
-    	    else if(mySpace[suffixArray[i]] < myTarget[j])
+    	    else if(mySpace[x] < myTarget[y])
     	      return 1;
-    	    else if(mySpace[suffixArray[i]] == myTarget[j]) {
-    	      i++; j++;
-    	      if((i >= mySpace.length) && (j >= end))
+    	    else if(mySpace[x] == myTarget[y]) {
+    	      x++;y++;
+    	      if((x >= mySpace.length) && (y >= end))
     	        return 0;
-    	      else if(i >= mySpace.length)
+    	      else if(x >= mySpace.length)
     	        return 1;
-    	      else if(j >= end)
+    	      else if(y >= end)
     	        return 0;
     	    }
     	  }
@@ -188,8 +190,8 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public int subByteFrequency(int start, int end) {
-	/* This method be work as follows, but
-	int spaceLength = mySpace.length;
+	// This method be work as follows, but
+/*	int spaceLength = mySpace.length;
 	int count = 0;
 	for(int offset = 0; offset< spaceLength - (end - start); offset++) {
 	    boolean abort = false;
@@ -197,10 +199,11 @@ public class Frequencer implements FrequencerInterface{
 		if(myTarget[start+i] != mySpace[offset+i]) { abort = true; break; }
 	    }
 	    if(abort == false) { count++; }
-	}
-	*/
+	}*/
+
 	int first = subByteStartIndex(start, end);
 	int last1 = subByteEndIndex(start, end);
+			//System.out.print("last1 "+last1+ " first "+first);
 	return last1 - first;
     }
 

@@ -29,7 +29,7 @@ public class Frequencer implements FrequencerInterface{
     // The variable, "suffixArray" is the sorted array of all suffixes of mySpace.
     // Each suffix is expressed by a integer, which is the starting position in mySpace.
     // The following is the code to print the variable
-  private void printSuffixArray() {
+    private void printSuffixArray() {
 		if(spaceReady) {
 	    for(int i=0; i< mySpace.length; i++) {
 				int s = suffixArray[i];
@@ -40,6 +40,20 @@ public class Frequencer implements FrequencerInterface{
 	    }
 	}
 }
+    /*
+    private void printSuffixArrayWithCompare(int start, int end) {
+        if(spaceReady) {
+            for(int i=0; i< mySpace.length; i++) {
+                System.out.printf("%4d ", targetCompare(i, start, end));
+                int s = suffixArray[i];
+                for(int j=s;j<mySpace.length;j++) {
+                    System.out.write(mySpace[j]);
+                }
+                System.out.write('\n');
+            }
+        }
+    }
+    */
 
   private int suffixCompare(int i, int j) {
 	// comparing two suffixes by dictionary order.
@@ -124,10 +138,15 @@ public class Frequencer implements FrequencerInterface{
 	//
         //suffixArrayを使ってmySpaceを検索
         int l = suffixArray[i];
-        for(int k=j; k<end-1; k++){
-            if(mySpace[l] > myTarget[k]){
+        
+        
+        for(int k=j; k<end; k++){
+            if(mySpace[l] == myTarget[k]  ){
+                if(mySpace.length - suffixArray[i] < end - j /*myTarget.length*/) return -1;
+                //return 0;
+            }else if(mySpace[l] > myTarget[k]){
                 return 1;
-            } else if(mySpace[l] < myTarget[k] || mySpace[l+1]==' '){  //mySpace終端
+            }else if(mySpace[l] < myTarget[k] /*|| mySpace[l+1]==' '*/){  //mySpace終端
                 return -1;
             }
             l++;
@@ -146,11 +165,14 @@ public class Frequencer implements FrequencerInterface{
 	// ****  Please write code here... ***
 	//
         int ret;
+        
+        //printSuffixArrayWithCompare(start, end);
+        
         for(int i=0; i<suffixArray.length; i++){
             ret = targetCompare(i, start, end);
             if(ret == 0) return i;
         }
-        return -1;
+        return suffixArray.length;
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -164,9 +186,9 @@ public class Frequencer implements FrequencerInterface{
         int ret;
         for(int i=0; i<suffixArray.length; i++){
             ret = targetCompare(i, start, end);
-            if(ret == -1) return i;
+            if(ret == 1) return i;
         }
-        return -1;
+        return suffixArray.length;
     }
 
     public int subByteFrequency(int start, int end) {
@@ -187,7 +209,7 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public void setTarget(byte [] target) { 
-	myTarget = target; if(myTarget.length>0) targetReady = true; 
+	myTarget = target; if(myTarget.length>0) targetReady = true;
     }
 
     public int frequency() {
@@ -201,6 +223,7 @@ public class Frequencer implements FrequencerInterface{
 	try {
 	    frequencerObject = new Frequencer();
 	    frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
+        //frequencerObject.setSpace("AAA".getBytes());
 	    frequencerObject.printSuffixArray(); // you may use this line for DEBUG
 	    /* Example from "Hi Ho Hi Ho"
 	       0: Hi Ho
@@ -216,18 +239,19 @@ public class Frequencer implements FrequencerInterface{
 	       A:o Hi Ho
 	    */
 
-	    frequencerObject.setTarget("H".getBytes());
+	    frequencerObject.setTarget("Ho".getBytes());
+        //frequencerObject.setTarget("AA".getBytes());
 	    //
 	    // ****  Please write code to check subByteStartIndex, and subByteEndIndex
 	    //
 
         int s = 0, e = 0;
-        s = frequencerObject.subByteStartIndex(0,1);
-        e = frequencerObject.subByteEndIndex(0,1);
+        s = frequencerObject.subByteStartIndex(0,frequencerObject.myTarget.length);
+        e = frequencerObject.subByteEndIndex(0,frequencerObject.myTarget.length);
         System.out.println("start:" + s + " end:" + e);
 	    int result = frequencerObject.frequency();
 	    System.out.print("Freq = "+ result+" ");
-	    if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    if(2 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
 	}
 	catch(Exception e) {
 	    System.out.println("STOP");

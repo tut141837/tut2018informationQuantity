@@ -40,8 +40,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	mySpace = space; myFrequencer.setSpace(space); 
     }
 
-    public double estimation(){
-	boolean [] partition = new boolean[myTarget.length+1];
+    public double estimationBefore(){
+	boolean[] partition = new boolean[myTarget.length+1];
 	int np;
 	np = 1<<(myTarget.length-1);
 	//System.out.println("np="+np+" length="+myTarget.length);
@@ -83,7 +83,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	return value;
     }
 
-	public double estimationAfter(){
+	public double estimation(){
 		double[] iqarray = new double[myTarget.length];
 		double value;
 		double np;
@@ -114,22 +114,22 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	myObject = new InformationEstimator();
 	myObject.setSpace("3210321001230123".getBytes());
 	myObject.setTarget("0".getBytes());
-	value = myObject.estimationAfter();
+	value = myObject.estimationBefore();
     value2 = myObject.estimation();
 	System.out.println(">0 "+value);
     System.out.println(">0 "+value2);
 	myObject.setTarget("01".getBytes());
-	value = myObject.estimationAfter();
+	value = myObject.estimationBefore();
     value2 = myObject.estimation();
 	System.out.println(">01 "+value);
     System.out.println(">01 "+value2);
 	myObject.setTarget("0123".getBytes());
-	value = myObject.estimationAfter();
+	value = myObject.estimationBefore();
    	value2 = myObject.estimation();
 	System.out.println(">0123 "+value);
     System.out.println(">0123 "+value2);
 	myObject.setTarget("00".getBytes());
-	value = myObject.estimationAfter();
+	value = myObject.estimationBefore();
    	value2 = myObject.estimation();
 	System.out.println(">00 "+value);
     System.out.println(">00 "+value2);

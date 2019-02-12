@@ -55,7 +55,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
 
     //ここを書き直す
     public double estimation(){
-      double [] Iq = new double[myTarget.length];
+      double [] Iq = new double[myTarget.length + 1];
       int start= 0;
       int end = 0;
       double value=0;
@@ -160,8 +160,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	value = myObject.estimation();
 	System.out.println(">00 "+value);
 
-	myObject.setTarget("321".getBytes());
-	value = myObject.estimation();
-	System.out.println(">321 "+value);
+	//myObject.setTarget("321".getBytes());
+	//value = myObject.estimation();
+	//System.out.println(">321 "+value);
     }
 }

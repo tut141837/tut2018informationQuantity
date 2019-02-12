@@ -57,18 +57,47 @@ public class Frequencer implements FrequencerInterface{
     // "Ho"     <  "Ho "      ; if the prefix is identical, longer string is big
     //
     // ****  Please write code here... ***
-    String str = new String(mySpace);  
-    String str_i = str.substring(suffixArray[i] ,mySpace.length);
-    String str_j = str.substring(suffixArray[j] ,mySpace.length);
-    if(str_i.compareTo(str_j) > 0) {
-      return 1;
-    } else if(str_i.compareTo(str_j) < 0) {
-      return -1;
-    }else{
-      return 0;
+    for(int k = 0 ;k < mySpace.length - Math.max(suffixArray[i] ,suffixArray[j]) ;k++) {
+      //suffixの大きいもの（文字列が短いもの）の文字列の長さの回数繰り返す
+      if((int)mySpace[suffixArray[i] + k] - mySpace[suffixArray[j] + k] != 0) {
+        //2つの文字列を比較してiが大きいなら1,jが大きいなら-1を返す
+        return (int)Math.signum((int)mySpace[suffixArray[i] + k] - (int)mySpace[suffixArray[j] + k]);
+      }
     }
+    //文字列の短い方の探索が終わった
+    //iとjが同じだが、iの方が文字列が長かったら1,jの方が文字列が長かったら-1,両方同じ文字列の長さなら0を返す
+    //iとjは大きい方が文字列が短いことに注意
+    return (int)Math.signum(suffixArray[j] - suffixArray[i]);
     //
     //return 0; // This line should be modified.
+  }
+
+  public void sort(int [] subSuffix ,int left ,int right) {
+    //クイックソート
+    if(left < right) {
+      int partition = (left + right) / 2;
+      int l = left;
+      int r = right;
+      while(l <= r) {
+        while(suffixCompare(partition ,l) == 1) {
+          //suffixArray[partition] < suffixArray[l]
+          l++;
+        }
+        while(suffixCompare(r ,partition) == 1) {
+          //suffixArray[r] < suffixArray[partition]
+          r--;
+        }
+        if(l <= r) {
+          int temp = subSuffix[l];
+          subSuffix[l] = subSuffix[r];
+          subSuffix[r] = temp;
+          l++;
+          r--;
+        }
+      }
+      sort(subSuffix ,left ,r);
+      sort(subSuffix ,l ,right);
+    }
   }
 
   public void setSpace(byte []space) { 
@@ -83,6 +112,7 @@ public class Frequencer implements FrequencerInterface{
     //
     //
     // ****  Please write code here... ***
+    //sort(suffixArray ,0 ,suffixArray.length - 1);
     int temp;
     for(int i = 0 ;i < suffixArray.length-1 ;i++) {
       for(int j = suffixArray.length-1 ;j > i ;j--) {
@@ -115,30 +145,18 @@ public class Frequencer implements FrequencerInterface{
     // "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
     //
     // ****  Please write code here... ***
-    try {
-      if(end - j > myTarget.length) {
-        throw new IllegalArgumentException("myTargetよりendが大きいです。");
+    for(int k = 0 ;k < Math.min(end - j ,mySpace.length - suffixArray[i]) ;k++) {
+      //suffixの大きいもの（文字列が短いもの）の文字列の長さの回数繰り返す
+      if(mySpace[suffixArray[i] + k] - myTarget[j + k] != 0) {
+        //2つの文字列を比較してiが大きいなら1,jが大きいなら-1を返す
+        return (int)Math.signum(mySpace[suffixArray[i] + k] - myTarget[j + k]);
       }
-      if(i < 0 || i > suffixArray.length || j < 0 || j > suffixArray.length) {
-        throw new IllegalArgumentException("iかjの値が不正です。");
-      }
-    } catch(Exception e) {
-      e.printStackTrace();
     }
-    String str = new String(mySpace);  
-    String str_i = str.substring(suffixArray[i] ,str.length());
-    String str_j = str.substring(suffixArray[j] ,end);
-    String tar = new String(myTarget);
-    tar = tar.substring(j,j + 1);
-    if(str.substring(suffixArray[i] ,str.length()).startsWith(tar)) {
-      return 0;
-    }
-    if(str_i.compareTo(str_j) > 0) {
+    //文字列の短い方の探索が終わった
+    //ここまで完全一致でsuffixの方が文字列が長いなら等価、targetの方が文字列が長いならtargetの方が大きいと判定
+    if((int)Math.signum((end - j) - (mySpace.length - suffixArray[i])) > 0) {
       return 1;
-    }
-    else if(str_i.compareTo(str_j) < 0){
-      return -1;
-    }else{
+    } else {
       return 0;
     }
     //
@@ -162,11 +180,8 @@ public class Frequencer implements FrequencerInterface{
       //endが大きすぎるか、startが小さすぎる
       return -1;
     }
-    String str = new String(mySpace);
-    String targetStr = new String(myTarget);
-    targetStr = targetStr.substring(start ,end);
     for(int i = 0 ;i < suffixArray.length ;i++) {
-      if(str.substring(suffixArray[i], mySpace.length).startsWith(targetStr)) {
+      if(targetCompare(i ,start ,end) == 0) {
         return i;
       }
     }
@@ -182,32 +197,32 @@ public class Frequencer implements FrequencerInterface{
     // For "Ho ", it will return 7 for "Hi Ho Hi Ho".
     //
     // ****  Please write code here... ***
+    boolean startFlag = false;
     if(start > end) {
       //startよりendが大きかった場合、startとendを入れ替え
       int temp = start;
       start = end;
       end = temp;
     }
-    if(end > mySpace.length || start < 0) {
+    if(end > myTarget.length || start < 0) {
       //endが大きすぎるか、startが小さすぎる
       return -1;
     }
-    String str = new String(mySpace);
-    String targetStr = new String(myTarget);
-    targetStr = targetStr.substring(start ,end);
-    boolean startB; //startBoolean
-    boolean subBF = false; //subByteFlag
     for(int i = 0 ;i < suffixArray.length ;i++) {
-      startB = str.substring(suffixArray[i], mySpace.length).startsWith(targetStr);
-      if(startB == true) {
-        subBF = true;
+      if(targetCompare(i ,start ,end) == 0) {
+        //1回一致する場所を探して、一致したらフラグを立てる
+        startFlag = true;
       }
-      if(subBF == true && startB == false) {
+      if(targetCompare(i ,start ,end) == 1 && startFlag == true) {
+        //一致した場所の終わりのサフィックスの添え字を返す
         return i;
       }
     }
+    if(targetCompare(suffixArray.length - 1 ,start ,end) == 0) {
+      //最後まで進んでもtargetとsuffixArrayが一致した場合は最後の添え字を返す
+      return suffixArray.length;
+    }
     return -1;
-    //
     //return suffixArray.length; // This line should be modified.
   }
 
@@ -223,6 +238,16 @@ public class Frequencer implements FrequencerInterface{
        if(abort == false) { count++; }
        }
      */
+    if(start > end) {
+      //startよりendが大きかった場合、startとendを入れ替え
+      int temp = start;
+      start = end;
+      end = temp;
+    }
+    if(end - start <= 0) {
+      //endとstartが等しい
+      return 0;
+    }
     int first = subByteStartIndex(start, end);
     int last1 = subByteEndIndex(start, end);
     return last1 - first;

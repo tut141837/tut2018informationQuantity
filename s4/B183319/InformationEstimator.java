@@ -21,6 +21,9 @@ public class InformationEstimator implements InformationEstimatorInterface{
   byte [] mySpace;  // Sample space to compute the probability
   FrequencerInterface myFrequencer;  // Object for counting frequency
 
+  boolean targetReady = false;
+  boolean spaceReady = false;
+
   byte [] subBytes(byte [] x, int start, int end) {
     // corresponding to substring of String for  byte[] ,
     // It is not implement in class library because internal structure of byte[] requires copy.
@@ -34,13 +37,17 @@ public class InformationEstimator implements InformationEstimatorInterface{
     return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
   }
 
-  public void setTarget(byte [] target) { myTarget = target;}
+  public void setTarget(byte [] target) { myTarget = target;if(myTarget.length>0)targetReady=true;}
   public void setSpace(byte []space) {
     myFrequencer = new Frequencer();
     mySpace = space; myFrequencer.setSpace(space);
+    if(mySpace.length>0) spaceReady = true;
   }
 
   public double estimation(){
+    if(!targetReady) return 0.0;
+    if(!spaceReady) return Double.MAX_VALUE;
+
     //boolean [] partition = new boolean[myTarget.length+1];
     //int np;
     //np = 1<<(myTarget.length-1);
@@ -115,7 +122,6 @@ public class InformationEstimator implements InformationEstimatorInterface{
   public static void main(String[] args) {
     InformationEstimator myObject;
     double value;
-    long start = System.currentTimeMillis();
     myObject = new InformationEstimator();
     myObject.setSpace("3210321001230123".getBytes());
     myObject.setTarget("0".getBytes());
@@ -131,6 +137,5 @@ public class InformationEstimator implements InformationEstimatorInterface{
     value = myObject.estimation();
     System.out.println(">00 "+value);
     long end = System.currentTimeMillis();
-    System.out.println((end - start) + "ms");
   }
 }

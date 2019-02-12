@@ -1,8 +1,6 @@
 package s4.B183362;
 import java.lang.*;
 import s4.specification.*;
-import sun.security.action.GetIntegerAction;
-
 
 /*package s4.specification;
 
@@ -155,19 +153,24 @@ public class Frequencer implements FrequencerInterface{
 	*/
 	// ****  Please write code here... ***
 	//
-	int left = 0;
-		int right = mySpace.length - 1;
+		int left = 0;
+		int right = suffixArray.length - 1;
 		int center = (right + left) / 2;
 		if(targetCompare(left, start, end) == 0) return left;
+		if(targetCompare(left, start, end) == 1) return suffixArray.length;
 		do{
-			if(targetCompare(center, start, end) == -1) left = center;
-			else right = center;
+			if(targetCompare(center, start, end) == -1) {
+				left = center;
+			}
+			else {
+				right = center;
+			}
 			center = (right + left) / 2;
 			if(left == center) return right;
 		}while(left < right);
 
 
-	return suffixArray.length; // This line should be modified.
+		return suffixArray.length; // This line should be modified.
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -179,16 +182,20 @@ public class Frequencer implements FrequencerInterface{
 	// ****  Please write code here... ***
 	//
 	int left = 0;
-	int right = mySpace.length - 1;
+	int right = suffixArray.length - 1;
 	int center = (left + right) / 2;
-	if(targetCompare(right, start, end) == 0) return mySpace.length;
+	if(targetCompare(right, start, end) == 0) return suffixArray.length;
+	if(targetCompare(left, start, end) == 1) return suffixArray.length;
 	do{
-		if(targetCompare(center, start, end) == 1) right = center;
-		else left = center;
+		if(targetCompare(center, start, end) == 1) {
+			right = center;
+		}
+		else {
+			left = center;
+		}
 		center = (left + right) / 2;
 		if(left == center) return right;
 	}while(left < right);
-
 
 	return suffixArray.length; // This line should be modified.
     }
@@ -244,18 +251,20 @@ public class Frequencer implements FrequencerInterface{
 	       A:o Hi Ho
 	    */
 
-	    frequencerObject.setTarget("Ho".getBytes());
+	    frequencerObject.setTarget("H".getBytes());
 	    //
 	    // ****  Please write code to check subByteStartIndex, and subByteEndIndex
 	    //
-		int start = frequencerObject.subByteStartIndex(0, 2);
-		int end   = frequencerObject.subByteEndIndex(0, 2);
-		System.out.println("start = " +start+" end = "+end+" " );
-		if(start == 3 && end == 7){System.out.println("OK");} else {System.out.println("WRONG"); }
+		int start = frequencerObject.subByteStartIndex(0, frequencerObject.getTargetLength());
+		int end   = frequencerObject.subByteEndIndex(0, frequencerObject.getTargetLength());
+		//System.out.println("start = " +start+" end = "+end+" " );
+		if(start != 3 || end != 7){System.out.println("WRONG");}
+		if(start != 3){System.out.println("subByteStartIndex has a problem");}
+		if(end != 7){System.out.println("subByteEndIndex has a problem");}
 
 	    int result = frequencerObject.frequency();
-	    System.out.print("Freq = "+ result+" ");
-	    if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    //System.out.print("Freq = "+ result+" ");
+	    if(4 != result) { System.out.println("WRONG : frequency has a problem"); }
 	}
 	catch(Exception e) {
 	    System.out.println("STOP");

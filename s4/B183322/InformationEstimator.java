@@ -20,6 +20,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
     byte [] myTarget; // data to compute its information quantity
     byte [] mySpace;  // Sample space to compute the probability
     FrequencerInterface myFrequencer;  // Object for counting frequency
+    boolean targetReady = false;
+    boolean spaceReady = false;
 
     byte [] subBytes(byte [] x, int start, int end) {
     	// corresponding to substring of String for  byte[] ,
@@ -34,11 +36,15 @@ public class InformationEstimator implements InformationEstimatorInterface{
       return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
     }
 
-    public void setTarget(byte [] target) { myTarget = target;}
+    public void setTarget(byte [] target) {
+      myTarget = target;
+      if(myTarget.length>0) targetReady = true;
+    }
 
     public void setSpace(byte []space) {
     	myFrequencer = new Frequencer();
     	mySpace = space; myFrequencer.setSpace(space);
+      if(mySpace.length>0) spaceReady = true;
     }
 
     // public double estimation(){
@@ -85,6 +91,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
     // }
 
     public double estimation(){
+      if(targetReady == false) return 0.0;
+      if(spaceReady  == false) return Double.MAX_VALUE;
       //計算した結果最小となったものを格納する。再利用もする
       double[] iqr = new double[myTarget.length];
       //一時的に計算結果を格納する。
@@ -92,7 +100,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
       double tmp;
       //targetの長さ分繰り返す。
       for(int k=0; k<myTarget.length; k++){
-        result = Double.MAX_VALUE;;
+        result = Double.MAX_VALUE;
         //計算を行う。
         for(int l=0; l<=k; l++){
           myFrequencer.setTarget(subBytes(myTarget, l, k+1));

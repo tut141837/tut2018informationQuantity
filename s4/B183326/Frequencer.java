@@ -108,19 +108,20 @@ public class Frequencer implements FrequencerInterface{
   	// It should be used to search the apropriate index of some suffix.
   	// Example of search
   	// suffix          target
-          // "o"       >     "i"
-          // "o"       <     "z"
+    // "o"       >     "i"
+    // "o"       <     "z"
   	// "o"       =     "o"
-          // "o"       <     "oo"
+    // "o"       <     "oo"
   	// "Ho"      >     "Hi"
   	// "Ho"      <     "Hz"
   	// "Ho"      =     "Ho"
-          // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
+    // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
   	// "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
   	//
   	// ****  Please write code here... ***
   	//
     for(int k=j; k<end; k++){
+      if((suffixArray[i]+k-j)>=mySpace.length) return -1;
       if(myTarget[k]!=mySpace[suffixArray[i]+k-j]){
         if(myTarget[k]<mySpace[suffixArray[i]+k-j]) return 1;
         else return -1;
@@ -185,7 +186,7 @@ public class Frequencer implements FrequencerInterface{
   public int frequency() {
   	if(targetReady == false) return -1;
   	if(spaceReady == false) return 0;
-  	return subByteFrequency(1, myTarget.length);
+  	return subByteFrequency(0, myTarget.length);
   }
 
   public static void main(String[] args) {

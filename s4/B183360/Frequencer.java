@@ -69,6 +69,44 @@ public class Frequencer implements FrequencerInterface{
 
     }
 
+    public void sort(int[] array, int low, int high){
+           if(low < high){
+               int middle = (low + high) >>> 1;
+               sort(array, low , middle);
+               sort(array, middle+1, high);
+               merge(array, low, middle, high);
+           }
+    }
+
+    public void merge(int[] array, int low, int middle, int high){
+           int[] helper = new int[array.length];
+
+           for (int i = low; i <= high; i++){
+               helper[i] = array[i];
+           }
+           int helperLeft = low;
+           int helperRight = middle + 1;
+           int current = low;
+
+           while (helperLeft <= middle && helperRight <= high){
+             if(suffixCompare(helper[helperLeft],helper[helperRight]) == -1){
+            //   if (helper[helperLeft] <= helper[helperRight]){
+                   array[current] = helper[helperLeft];
+                   helperLeft ++;
+               }
+               else {
+                   array[current] = helper[helperRight];
+                   helperRight ++;
+
+               }
+               current ++;
+           }
+           int remaining = middle - helperLeft;
+           for (int i = 0; i <= remaining; i++){
+               array[current + i] = helper[helperLeft + i];
+           }
+       }
+
     public void setSpace(byte []space) {
         mySpace = space;
         if(mySpace.length>0) spaceReady = true;
@@ -78,27 +116,35 @@ public class Frequencer implements FrequencerInterface{
         }
 
         // **** Please write code here... *** //
-        for(int i = 0; i < suffixArray.length-1; i++){
-            for(int j = suffixArray.length - 1; j > i; j--){
-//              System.out.println("###### i="+ i +" j="+ j +" ######");
-                if(suffixCompare(suffixArray[j-1],suffixArray[j]) == 1){
-                    int tmp;
-                    tmp = suffixArray[j-1];
-                    suffixArray[j-1] = suffixArray[j];
-                    suffixArray[j] = tmp;
-                }
 
-//                for(int m = 0;m < suffixArray.length;m++)
-//                  System.out.print(suffixArray[m]);
-//                System.out.println("");
-//                printSuffixArray();
-//                System.out.println("#####################");
-//                System.out.println("");
-            }
-        }
+        sort(suffixArray, 0, suffixArray.length-1);
+
+        
+//         for(int i = 0; i < suffixArray.length-1; i++){
+//             for(int j = suffixArray.length - 1; j > i; j--){
+// //              System.out.println("###### i="+ i +" j="+ j +" ######");
+//                 if(suffixCompare(suffixArray[j-1],suffixArray[j]) == 1){
+//                     int tmp;
+//                     tmp = suffixArray[j-1];
+//                     suffixArray[j-1] = suffixArray[j];
+//                     suffixArray[j] = tmp;
+//                 }
+
+// //                for(int m = 0;m < suffixArray.length;m++)
+// //                  System.out.print(suffixArray[m]);
+// //                System.out.println("");
+// //                printSuffixArray();
+// //                System.out.println("#####################");
+// //                System.out.println("");
+//             }
+//         }
     }
 
     private int targetCompare(int i, int j, int end) {
+
+      
+
+        // ****  Please write code here... ***
 
       int suffix_i = i;
       //int suffix_j = j;
@@ -129,13 +175,6 @@ public class Frequencer implements FrequencerInterface{
       }
 
 
-        // comparing suffix_i and target_j_end by dictonary order with limitation of length;
-        // if the beginning of suffix_i matches target_i_end, and suffix is longer than
-        //"Ho" <
-        // "Ho" = //
-        // ****  Please write code here... ***
-        //"Ho" :"Ho"isnotintheheadofsuffix"Ho"
-        //"H" : "H" is in the head of suffix "Ho"
         return 0; // This line should be modified.
 
     }
@@ -305,31 +344,31 @@ public class Frequencer implements FrequencerInterface{
             */
 
             frequencerObject.setTarget(target.getBytes());
-            //
+            
             //**** Please write code to check subByteStartIndex, and subByteEndIndex //
-            // try {
-            //     if(space.length() != 0 )
-            //     { System.out.println("check1: OK"); }
-            //     else {
-            //       System.out.println("WRONG");
-            //       System.out.println("case1 : checking s4.B183353.Frequencer");
-            //       System.out.print("mySpaceに文字が指定されていません");}
-            // }
-            // catch(Exception e) {
-            //     System.out.println("Exception occurred: STOP");
-            // }
+            try {
+                if(space.length() != 0 )
+                { System.out.println("check1: OK"); }
+                else {
+                  System.out.println("WRONG");
+                  System.out.println("case1 : checking s4.B183353.Frequencer");
+                  System.out.print("mySpaceに文字が指定されていません");}
+            }
+            catch(Exception e) {
+                System.out.println("Exception occurred: STOP");
+            }
 
-            // try {
-            //     if(target.length() != 0 )
-            //     { System.out.println("check2: OK"); }
-            //     else {
-            //       System.out.println("WRONG");
-            //       System.out.println("case2 : checking s4.B183353.Frequencer");
-            //       System.out.print("Targetに文字が指定されていません");}
-            // }
-            // catch(Exception e) {
-            //     System.out.println("Exception occurred: STOP");
-            // }
+            try {
+                if(target.length() != 0 )
+                { System.out.println("check2: OK"); }
+                else {
+                  System.out.println("WRONG");
+                  System.out.println("case2 : checking s4.B183353.Frequencer");
+                  System.out.print("Targetに文字が指定されていません");}
+            }
+            catch(Exception e) {
+                System.out.println("Exception occurred: STOP");
+            }
 
 
 

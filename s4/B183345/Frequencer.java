@@ -66,7 +66,35 @@ public class Frequencer implements FrequencerInterface{
 	    return 0;
 	}	
     }
-
+    
+    void quicksort(int[] indexarray, String[] array, int left, int right){
+        if(left <= right){
+            String p = array[(left + right) >>> 1];
+            int l = left;
+            int r = right;
+            while(l <= r){
+                while (array[l].compareTo(p) < 0){
+                    l ++;
+                }
+                while (array[r].compareTo(p) > 0){
+                    r --;
+                }
+                if (l <= r){
+                    int indextmp = indexarray[l];
+                    indexarray[l] = indexarray[r];
+                    indexarray[r] = indextmp;
+		    String tmp = array[l];
+                    array[l] = array[r];
+                    array[r] = tmp;
+                    l++ ;
+                    r-- ;
+                }
+            }
+            quicksort(indexarray, array, left, r);
+            quicksort(indexarray, array, l, right);
+        }
+    }
+    
     public void setSpace(byte []space) {
 	String temp;
 	int suftemp;
@@ -77,29 +105,18 @@ public class Frequencer implements FrequencerInterface{
 	    suffixArray[i] = i;
 	}
 	// Sorting is not implmented yet.
+	
 	//
 	//
 	// ****  Please write code here... ***
 	//
+	String tmp = new String(mySpace);
 	String[] temparray = new String[mySpace.length];
 	for(int i = 0; i < mySpace.length; i++){
-	    for(int j = i; j < mySpace.length; j++){
-		temparray[i] += (char)mySpace[j];
-	    }
+	    temparray[i] = tmp.substring(i);
 	}
 
-	for(int i = 0; i < mySpace.length - 1; i++){
-	    for(int j = mySpace.length - 1; j > i; j--){
-		if(temparray[j-1].compareTo(temparray[j]) > 0){
-		    temp = temparray[j-1];
-		    temparray[j-1] = temparray[j];
-		    temparray[j] = temp;
-		    suftemp = suffixArray[j-1];
-		    suffixArray[j-1] = suffixArray[j];
-		    suffixArray[j] = suftemp;
-		}
-	    }
-	}
+	quicksort(suffixArray, temparray, 0, mySpace.length - 1);
     }
 
     private int targetCompare(int i, int j, int end) {
@@ -122,7 +139,6 @@ public class Frequencer implements FrequencerInterface{
 	// "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
 	//
 	// ****  Please write code here... ***
-	//
 	int s_i = suffixArray[i];
 	int n = mySpace.length - s_i;
 	
@@ -143,8 +159,8 @@ public class Frequencer implements FrequencerInterface{
 	}
 
 	return 0;
-    }
 
+    }
     private int subByteStartIndex(int start, int end) {
 	// It returns the index of the first suffix which is equal or greater than subBytes;
 	// not implemented yet;
@@ -155,16 +171,16 @@ public class Frequencer implements FrequencerInterface{
 	//
 	int min = 0;
 	int mid = 0;
-        int max = mySpace.length;
+        int max = mySpace.length - 1;
 	int compare_result = 0;
-        while(max - min > 1){
+        while(max >= min){
 	    mid = (max + min) / 2;
 	    compare_result = targetCompare(mid, start, end);
 	    if(compare_result >= 0){
-		max = mid;
+		max = mid - 1;
 	    }
 	    else{
-		min = mid;
+		min = mid + 1;
 	    }
 	}
 	return max;
@@ -180,16 +196,16 @@ public class Frequencer implements FrequencerInterface{
 	//
 	int min = 0;
 	int mid = 0;
-        int max = mySpace.length;
+        int max = mySpace.length - 1;
 	int compare_result = 0;
-        while(max - min > 1){
+        while(max >= min){
 	    mid = (max + min) / 2;
 	    compare_result = targetCompare(mid, start, end);
 	    if(compare_result <= 0){
-		min = mid;
+		min = mid + 1;
 	    }
 	    else{
-		max = mid;
+		max = mid - 1;
 	    }
 	}
 	return max;

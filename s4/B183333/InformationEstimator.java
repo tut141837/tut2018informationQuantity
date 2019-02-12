@@ -56,7 +56,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
         if( num <= 0 ){
             return 0.0;
         }
-        // 文字列の長さが1の時情報量を計算し返す
+        // 文字列の長さが1の時、情報量を計算し返す
         if( num == 1 ){
             value[num-1] = iq(myFrequencer.subByteFrequency(0, 1));
             return value[num-1];

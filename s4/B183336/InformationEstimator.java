@@ -1,4 +1,4 @@
-package s4; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID.
+package s4.B183336; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID.
 
 import java.util.ArrayList;
 
@@ -52,72 +52,58 @@ public class InformationEstimator implements InformationEstimatorInterface {
 	}
 
 	public double estimation() {
-		boolean[] partition = new boolean[myTarget.length + 1];
-		ArrayList<Double> st=new ArrayList<Double>();
-		int np;
-		np = 1 << (myTarget.length - 1);
-		// System.out.println("np="+np+" length="+myTarget.length);
-		double value = Double.MAX_VALUE; // value = mininimum of each "value1".
+		ArrayList<Double> storeIq = new ArrayList<Double>();
+		int start = 0;
+		int end = 0;
 
-		for (int p = 0; p < np; p++) { // There are 2^(n-1) kinds of partitions.
-			// binary representation of p forms partition.
-			// for partition {"ab" "cde" "fg"}
-			// a b c d e f g : myTarget
-			// T F T F F T F T : partition:
-			partition[0] = true; // I know that this is not needed, but..
-			for (int i = 0; i < myTarget.length - 1; i++) {
-				partition[i + 1] = (0 != ((1 << i) & p));
-			}
-			partition[myTarget.length] = true;
+		double value = Double.MAX_VALUE;
+		double valuetemp;
 
-			// Compute Information Quantity for the partition, in "value1"
-			// value1 = IQ(#"ab")+IQ(#"cde")+IQ(#"fg") for the above example
-			double value1 = (double) 0.0;
-			int end = 0;
-			;
-			int start = end;
-			while (start < myTarget.length) {
-				// System.out.write(myTarget[end]);
-				end++;
-				;
-				while (partition[end] == false) {
-					// System.out.write(myTarget[end]);
-					end++;
-				}
-				// System.out.print("("+start+","+end+")");
+		for(int i = 0; i < myTarget.length; i++){
+			end = i + 1;
+			if(i == 0){
 				myFrequencer.setTarget(subBytes(myTarget, start, end));
-				value1 = iq(myFrequencer.frequency());
-				for (int i = 0; i < p; i++) {
-					value1 += st.get(i);
+				storeIq.add(i,iq(myFrequencer.frequency()));//add以外でもいける？
+			}else{
+				for(int j = 0; j < end; j++){
+					start = j;
+					myFrequencer.setTarget(subBytes(myTarget, start, end));
+					valuetemp = iq(myFrequencer.frequency());
+					if(start != 0){
+						valuetemp = storeIq.get(j-1) + valuetemp;
+					}
+					if(value > valuetemp){
+						value = valuetemp;
+					}
 				}
-				start = end;
+				storeIq.add(i, value);
 			}
-			// System.out.println(" "+ value1);
-			st.add(value1);		//store
-			// Get the minimal value in "value"
-			if (value1 < value)
-				value = value1;
+
 		}
-		return value;
+
+		return storeIq.get(myTarget.length-1);
+
 	}
 
 	public static void main(String[] args) {
 		InformationEstimator myObject;
 		double value;
 		myObject = new InformationEstimator();
+
 		myObject.setSpace("3210321001230123".getBytes());
 		myObject.setTarget("0".getBytes());
 		value = myObject.estimation();
-		System.out.println(">0 " + value);
+		System.out.println(">0 "+value);
 		myObject.setTarget("01".getBytes());
 		value = myObject.estimation();
-		System.out.println(">01 " + value);
+		System.out.println(">01 "+value);
 		myObject.setTarget("0123".getBytes());
 		value = myObject.estimation();
-		System.out.println(">0123 " + value);
+		System.out.println(">0123 "+value);
 		myObject.setTarget("00".getBytes());
 		value = myObject.estimation();
-		System.out.println(">00 " + value);
+		System.out.println(">00 "+value);
+
 	}
 }
 

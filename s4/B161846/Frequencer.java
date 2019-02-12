@@ -167,7 +167,6 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
   int i = 0;
-  int tmp = suffixArray.length - 1;
   while(i < mySpace.length) {
     int chk;
     chk = targetCompare(i, start, end);
@@ -201,7 +200,7 @@ public class Frequencer implements FrequencerInterface{
     }
 
     public int subByteFrequency(int start, int end) {
-	/* This method be work as follows, but
+	/*This method be work as follows, but
 	int spaceLength = mySpace.length;
 	int count = 0;
 	for(int offset = 0; offset< spaceLength - (end - start); offset++) {
@@ -263,4 +262,5 @@ public class Frequencer implements FrequencerInterface{
 	    System.out.println("STOP");
 	}
     }
+
 }

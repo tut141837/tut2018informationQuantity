@@ -42,7 +42,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     public double estimation(){
-	boolean [] partition = new boolean[myTarget.length+1];
+	boolean[] partition = new boolean[myTarget.length+1];
 	int np;
 
 double[][] nparray = new double[myTarget.length+1][myTarget.length];

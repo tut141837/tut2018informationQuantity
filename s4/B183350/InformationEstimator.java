@@ -41,13 +41,16 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     public double estimation(){
-		double [] myIq = new double[myTarget.length];
+		double [] myIq = null;
 		double iq1, iq2;
 		boolean [] partition = new boolean[myTarget.length+1];
 		int np;
 		np = 1<<(myTarget.length-1);
 		// System.out.println("np="+np+" length="+myTarget.length);
 		double value = Double.MAX_VALUE; // value = mininimum of each "value1".
+		if(myTarget.length != 0){
+			myIq = new double[myTarget.length];
+		}
 		/*mycode
 		myFrequencer.setTarget(subBytes(myTarget, 0, 1));
 		myIq[0] = iq(myFrequencer.frequency());
@@ -127,47 +130,47 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     public static void main(String[] args) {
-	InformationEstimator myObject;
-	double value;
-	myObject = new InformationEstimator();
-	myObject.setSpace("3210321001230123".getBytes());
-	//value = myObject.estimation();
-	//System.out.println(">3210321001230123 "+value);
-	myObject.setTarget("0".getBytes());
-	value = myObject.estimation();
-	System.out.println(">0 "+value);
-	myObject.setTarget("1".getBytes());
-	value = myObject.estimation();
-	System.out.println(">1 "+value);
-	myObject.setTarget("01".getBytes());
-	value = myObject.estimation();
-	System.out.println(">01 "+value);
-	myObject.setTarget("0123".getBytes());
-	value = myObject.estimation();
-	System.out.println(">0123 "+value);
-	myObject.setTarget("00".getBytes());
-	value = myObject.estimation();
-	System.out.println(">00 "+value);
-	myObject.setTarget("000".getBytes());
-	value = myObject.estimation();
-	System.out.println(">000 "+value);
-	myObject.setTarget("101".getBytes());
-	value = myObject.estimation();
-	System.out.println(">101 "+value);
-	myObject.setTarget("010".getBytes());
-	value = myObject.estimation();
-	System.out.println(">010 "+value);
-	myObject.setTarget("012345".getBytes());
-	value = myObject.estimation();
-	System.out.println(">012345 "+value);
-	myObject.setTarget("011".getBytes());
-	value = myObject.estimation();
-	System.out.println(">011 "+value);
-	myObject.setTarget("0110".getBytes());
-	value = myObject.estimation();
-	System.out.println(">0110 "+value);
-	myObject.setTarget("000000".getBytes());
-	value = myObject.estimation();
-	System.out.println(">000000 "+value);
+	// InformationEstimator myObject;
+	// double value;
+	// myObject = new InformationEstimator();
+	// myObject.setSpace("3210321001230123".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">3210321001230123 "+value);
+	// myObject.setTarget("0".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">0 "+value);
+	// myObject.setTarget("1".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">1 "+value);
+	// myObject.setTarget("01".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">01 "+value);
+	// myObject.setTarget("0123".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">0123 "+value);
+	// myObject.setTarget("00".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">00 "+value);
+	// myObject.setTarget("000".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">000 "+value);
+	// myObject.setTarget("101".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">101 "+value);
+	// myObject.setTarget("010".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">010 "+value);
+	// myObject.setTarget("012345".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">012345 "+value);
+	// myObject.setTarget("011".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">011 "+value);
+	// myObject.setTarget("0110".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">0110 "+value);
+	// myObject.setTarget("000000".getBytes());
+	// value = myObject.estimation();
+	// System.out.println(">000000 "+value);
     }
 }

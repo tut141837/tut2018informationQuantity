@@ -35,9 +35,11 @@ public class InformationEstimator implements InformationEstimatorInterface {
         return result;
     }
 
+    static final double log2 = Math.log10(2.0);
+
     // IQ: information quantity for a count,  -log2(count/sizeof(space))
-    double iq(int freq) {
-        return -Math.log10((double) freq / (double) mySpace.length) / Math.log10(2.0);
+    double iq(final int freq) {
+        return -Math.log10((double) freq / (double) mySpace.length) / log2;
     }
 
     /**
@@ -45,7 +47,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
      *
      * @param target the data
      */
-    public void setTarget(byte[] target) {
+    public void setTarget(final byte[] target) {
         myTarget = target;
     }
 
@@ -54,7 +56,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
      *
      * @param space the data
      */
-    public void setSpace(byte[] space) {
+    public void setSpace(final byte[] space) {
         myFrequencer = new Frequencer();
         mySpace = space;
         myFrequencer.setSpace(space);
@@ -85,46 +87,43 @@ public class InformationEstimator implements InformationEstimatorInterface {
             return 0.0;
         if (mySpace == null || mySpace.length == 0)
             return Double.MAX_VALUE;
-        boolean[] partition = new boolean[myTarget.length + 1];
-        int np;
-        np = 1 << (myTarget.length - 1);
-        // System.out.println("np="+np+" length="+myTarget.length);
-        double value = Double.MAX_VALUE; // value = mininimum of each "value1".
-
-        for (int p = 0; p < np; p++) { // There are 2^(n-1) kinds of partitions.
-            // binary representation of p forms partition.
-            // for partition {"ab" "cde" "fg"}
-            // a b c d e f g   : myTarget
-            // T F T F F T F T : partition:
-            partition[0] = true; // I know that this is not needed, but..
-            for (int i = 0; i < myTarget.length - 1; i++) {
-                partition[i + 1] = (0 != ((1 << i) & p));
-            }
-            partition[myTarget.length] = true;
-
-            // Compute Information Quantity for the partition, in "value1"
-            // value1 = IQ(#"ab")+IQ(#"cde")+IQ(#"fg") for the above example
-            double value1 = 0.0;
-            int end = 0;
-            int start = end;
-            while (start < myTarget.length) {
-                // System.out.write(myTarget[end]);
-                end++;
-                while (!partition[end]) {
-                    // System.out.write(myTarget[end]);
-                    end++;
+        final var cash = new double[myTarget.length + 1];
+        myFrequencer.setTarget(myTarget);
+        for (int i = 1; i <= myTarget.length; i++){
+            var min = Double.MAX_VALUE;
+            //int freqx = myFrequencer.subByteFrequency(0, i);
+            //var iqn = iq(freqx);
+            //var min = iqn; ここのコメントアウトを外すなら下のfor loopは j > 0
+            //コメントアウトを外すとMath.minが一回減るが,i=1の時のfreqxが0の時の対応がないと初めの一個だけないbyte列のとき遅い
+            for (int j = i - 1; j >= 0; j--) {
+                final var freq = myFrequencer.subByteFrequency(j, i);
+                if (freq == 0){
+                    if(j == i - 1)//一文字のfreqが0なら結果は必ずMAX_VALUE
+                        return Double.MAX_VALUE;
+                    break;
                 }
-                // System.out.print("("+start+","+end+")");
-                myFrequencer.setTarget(subBytes(myTarget, start, end));
-                value1 = value1 + iq(myFrequencer.frequency());
-                start = end;
+                min = Math.min(min, iq(freq) + cash[j]);
             }
-            // System.out.println(" "+ value1);
-
-            // Get the minimal value in "value"
-            if (value1 < value) value = value1;
+            cash[i] = min;
         }
+        var value = cash[myTarget.length];
         return Double.isInfinite(value) ? Double.MAX_VALUE : value;
+    }
+
+    public static void main(String[] args) {
+        try {
+            InformationEstimatorInterface myObject;
+            double value;
+            System.out.println("checking s4.B183301.InformationEstimator");
+            InformationEstimatorTest("3210321001230123","0");
+            InformationEstimatorTest("3210321001230123","01");
+            InformationEstimatorTest("3210321001230123","0123");
+            InformationEstimatorTest("3210321001230123","00");
+            InformationEstimatorTest("3210321001230123","0012");
+        }
+        catch(Exception e) {
+            System.out.println("Exception occurred: STOP");
+        }
     }
 }
 				  

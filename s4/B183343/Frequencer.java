@@ -29,7 +29,7 @@ public class Frequencer implements FrequencerInterface{
 	    // The variable, "suffixArray" is the sorted array of all suffixes of mySpace.
 	    // Each suffix is expressed by a integer, which is the starting position in mySpace.
 	    // The following is the code to print the variable
-	    private void printSuffixArray() {
+	   private void printSuffixArray() {
 		if(spaceReady) {
 		    for(int i=0; i< mySpace.length; i++) {
 			int s = suffixArray[i];
@@ -107,9 +107,9 @@ public class Frequencer implements FrequencerInterface{
 		    suffixArray[i] = i;
 		}
 
-		System.out.println("----start\n");
-		printSuffixArray();
-		  System.out.println("----\n\n\n");
+		// System.out.println("----start\n");
+		// printSuffixArray();
+		//   System.out.println("----\n\n\n");
 
 		// Sorting is not implmented yet.
 		//
@@ -118,7 +118,7 @@ public class Frequencer implements FrequencerInterface{
 	  int buf=0;
 	  int position=0;
 	  int j=0;
-
+//bubble sort
 	  for(position=0;position<mySpace.length-1;position++) {
 
 		  for(j=mySpace.length-1;j>position;j--) {
@@ -133,13 +133,15 @@ public class Frequencer implements FrequencerInterface{
 
 		  }
 
+//code merge sort
+
 //		  System.out.println("----"+position+"\n");
 //		  printSuffixArray();
 //		  System.out.println("----\n\n\n");
 //
 	  }
-		printSuffixArray();
-		System.out.println("----------------------\n");
+		// printSuffixArray();
+		// System.out.println("----------------------\n");
 
 	    }
 
@@ -152,10 +154,10 @@ public class Frequencer implements FrequencerInterface{
 		// It should be used to search the apropriate index of some suffix.
 		// Example of search
 		// suffix i          target j~end
-	        // "o"       >     "i"
-	        // "o"       <     "z"
+	  // "o"       >     "i"
+	  // "o"       <     "z"
 		// "o"       =     "o"
-	        // "o"       <     "oo"
+	  // "o"       <     "oo"
 		// "Ho"      >     "Hi"
 		// "Ho"      <     "Hz"
 		// "Ho"      =     "Ho"
@@ -166,13 +168,23 @@ public class Frequencer implements FrequencerInterface{
 
 
 
-	    	for(int a=suffixArray[i];a<mySpace.length && j<end;a++,j++){
-	    		if(mySpace[a]>myTarget[j]) {
-	    			return 1;
-	    		}else if(mySpace[a]<myTarget[j] || mySpace.length < end-j) {
-	    			return -1;
-	    		}
-	     	}
+	    	// for(int a=suffixArray[i];a<mySpace.length && j<end;a++,j++){
+	    	// 	if(mySpace[a]>myTarget[j]) {
+	    	// 		return 1;
+	    	// 	}else if(mySpace[a]<myTarget[j] || mySpace.length < end-j) {
+	    	// 		return -1;
+				// 	}
+	     	// }
+
+				for(int a=suffixArray[i];j<end;a++,j++){
+					if(mySpace[a]>myTarget[j]){
+						return 1;
+					}else if(mySpace[a]<myTarget[j] || mySpace.length < end-j){
+						return -1;
+					}else if(mySpace[a]==myTarget[j] && mySpace.length-a < end-j){
+						return -1;
+					}
+				}
 
 		return 0; // This line should be modified.
 	    }

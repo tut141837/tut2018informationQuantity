@@ -19,7 +19,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
     // Code to tet, *warning: This code condtains intentional problem*
     byte [] myTarget; // data to compute its information quantity
     byte [] mySpace;  // Sample space to compute the probability
-    FrequencerInterface myFrequencer;  // Object for counting frequency
+    FrequencerInterface myFrequencer = new Frequencer();  // Object for counting frequency
 
     byte [] subBytes(byte [] x, int start, int end) {
 	// corresponding to substring of String for  byte[] ,
@@ -34,9 +34,12 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
     }
 
-    public void setTarget(byte [] target) { myTarget = target;}
+    public void setTarget(byte [] target) { 
+		myTarget = target;
+		myFrequencer.setTarget(target);
+	}
     public void setSpace(byte []space) { 
-	myFrequencer = new Frequencer();
+	//myFrequencer = new Frequencer();
 	mySpace = space; myFrequencer.setSpace(space); 
     }
 
@@ -86,11 +89,11 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	}*/
 	
 	public double estimation(){
-		//部分文字列の情報量の格納配列
+		if(myFrequencer.frequency() == -1)return 0.0;
+		if(myFrequencer.frequency() == 0)return Double.MAX_VALUE;
+
 		double[] iqr = new double[myTarget.length];
-		//情報量の格納変数
 		double result;
-		//一時的な計算結果の格納変数
 		double tmp;
 		
 		for(int k=0; k < myTarget.length; k++ ){
@@ -124,19 +127,19 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	
 	myObject.setTarget("0".getBytes());
 	value = myObject.estimation();
-	System.out.println(">0 "+value);
+	if(2.0 != value)System.out.println("Wrong");
 	
 	myObject.setTarget("01".getBytes());
 	value = myObject.estimation();
-	System.out.println(">01 "+value);
+	if(3.0 != value)System.out.println("Wrong");
 	
 	myObject.setTarget("0123".getBytes());
 	value = myObject.estimation();
-	System.out.println(">0123 "+value);
-	
+	if(3.0 != value)System.out.println("Wrong");
+
 	myObject.setTarget("00".getBytes());
 	value = myObject.estimation();
-	System.out.println(">00 "+value);
+	if(4.0 != value)System.out.println("Wrong");
     }
 }
 				  
