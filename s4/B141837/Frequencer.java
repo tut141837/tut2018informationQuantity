@@ -2,6 +2,7 @@ package s4.B141837;
 import java.lang.*;
 import s4.specification.*;
 
+
 /*package s4.specification;
   public interface FrequencerInterface {     // This interface provides the design for frequency counter.
   void setTarget(byte  target[]); // set the data to search.
@@ -122,7 +123,7 @@ public class Frequencer implements FrequencerInterface{
 	// ****  Please write code here... ***
 	//
   //targetがsuffixの頭になっているなら0,そうでない場合,suffix > targetなら1,suffix < targetなら-1
-  
+
       
       
       
