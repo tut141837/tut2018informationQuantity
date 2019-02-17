@@ -1,1 +1,6 @@
-testtest
+TestCaseが通れば単位は貰える→まずTestCase通るものを作る
+Frequencer
+	targetCompare
+	subByteStartIndex
+	subByteEndIndex
+InformationEstimator
